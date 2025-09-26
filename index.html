@@ -1459,8 +1459,6 @@
 
         // Ver expediente detallado
         async function verExpediente(id) {
-            document.getElementById('expedienteContent').innerHTML = content;
-            openModal('expedienteModal');
             try {
                 // Hacemos la llamada a nuestro nuevo endpoint, pasándole el ID
                 const response = await fetch(`api/obtener_expediente.php?id=${id}`);
@@ -1544,15 +1542,6 @@
             </div>
         `;
 
-                /*esta seccion va arriba pero no se puede comentar y como no la ocupamos la comentamos
-                                <div class="bg-yellow-50 p-4 rounded-lg">
-                    <h4 class="text-lg font-medium text-gray-900 mb-3">📁 Archivos Adjuntos</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div><strong>INE Anverso:</strong> ${expediente.path_ine_anverso ? `<a href="${expediente.path_ine_anverso.substring(3)}" target="_blank" class="text-blue-600 hover:underline">Ver/Descargar</a>` : 'No disponible'}</div> 
-                        <div><strong>INE Reverso:</strong> ${expediente.path_ine_reverso ? `<a href="${expediente.path_ine_reverso.substring(3)}" target="_blank" class="text-blue-600 hover:underline">Ver/Descargar</a>` : 'No disponible'}</div>
-                    </div>
-                </div>
-                */
                 // Llenamos el modal con el contenido y lo mostramos
                 document.getElementById('expedienteContent').innerHTML = content;
                 openModal('expedienteModal');
