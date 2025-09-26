@@ -7,6 +7,8 @@
     <title>Sistema de Gestión de Atención Ciudadana - Cámara de Diputados</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         .fade-in {
             animation: fadeIn 0.3s ease-in;
@@ -783,7 +785,10 @@
             </div>
             <div id="expedienteContent" class="p-6">
             </div>
-            <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
+            <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-4">
+                <button onclick="generarPDF()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                    🖨️ Imprimir / Guardar PDF
+                </button>
                 <button onclick="cerrarModalExpediente()"
                     class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                     Cerrar Expediente
@@ -1454,6 +1459,8 @@
 
         // Ver expediente detallado
         async function verExpediente(id) {
+            document.getElementById('expedienteContent').innerHTML = content;
+            openModal('expedienteModal');
             try {
                 // Hacemos la llamada a nuestro nuevo endpoint, pasándole el ID
                 const response = await fetch(`api/obtener_expediente.php?id=${id}`);
@@ -1537,7 +1544,7 @@
             </div>
         `;
 
-                /*esta seccion va arriba pero no se puede comentar 
+                /*esta seccion va arriba pero no se puede comentar y como no la ocupamos la comentamos
                                 <div class="bg-yellow-50 p-4 rounded-lg">
                     <h4 class="text-lg font-medium text-gray-900 mb-3">📁 Archivos Adjuntos</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -1556,9 +1563,29 @@
             }
         }
 
+        // Cerrar modal de expediente
         function cerrarModalExpediente() {
             document.getElementById('expedienteModal').classList.add('hidden');
             document.getElementById('expedienteModal').classList.remove('flex');
+        }
+
+        // Generar PDF del expediente
+        function generarPDF() {
+            // 1. Seleccionar el elemento que queremos convertir a PDF
+            // En este caso, es el div que contiene toda la información del expediente.
+            const elemento = document.getElementById('expedienteContent');
+
+            // 2. Opciones de configuración para el archivo PDF
+            const opciones = {
+                margin: [0.5, 0.5, 0.5, 0.5], // Márgenes en pulgadas [arriba, izquierda, abajo, derecha]
+                filename: 'expediente_ciudadano.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // 3. Usar la librería para tomar el elemento, aplicar las opciones y guardarlo
+            html2pdf().from(elemento).set(opciones).save();
         }
 
         // Funciones para manejo de archivos
