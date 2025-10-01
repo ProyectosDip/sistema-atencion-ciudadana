@@ -1,19 +1,17 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
 
-// Lee las credenciales desde las Variables de Entorno de Render
-$servidor = getenv('DB_HOST');
-$usuario_db = getenv('DB_USER');
-$password_db = getenv('DB_PASSWORD');
-$nombre_db = getenv('DB_NAME');
-$puerto = 5432; // Puerto estándar de PostgreSQL
+// --- DATOS DE TU BASE DE DATOS DE HOSTINGER ---
+$servidor = "localhost";
+$nombre_db = "u455301875_atencionc";
+$usuario_db = "u455301875_adminatencion";
+$password_db = "3He$M1UYW?";
 
-// Cambiamos la conexión a pgsql para PostgreSQL
-$conexion_str = "pgsql:host=$servidor;port=$puerto;dbname=$nombre_db;user=$usuario_db;password=$password_db";
+// Cadena de conexión para MySQL con PDO
+$conexion_str = "mysql:host=$servidor;dbname=$nombre_db;charset=utf8mb4";
 
 try {
-    // Usamos PDO que es más compatible con diferentes bases de datos
-    $conexion = new PDO($conexion_str);
+    $conexion = new PDO($conexion_str, $usuario_db, $password_db);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     http_response_code(500);
